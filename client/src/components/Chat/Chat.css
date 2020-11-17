@@ -1,4 +1,5 @@
 .outerContainer {
+    direction: rtl;
     display: flex;
     justify-content: center;
     align-items: center;
