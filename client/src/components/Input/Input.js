@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Input.css';
 
-const Input = ({message, setMessage, sendMessage}) => (
+const Input = ({message, setMessage, sendMessage, uploadImage}) => (
     <form className="form">
         <input
             className="input"
@@ -12,6 +12,7 @@ const Input = ({message, setMessage, sendMessage}) => (
             onChange={(event) => setMessage(event.target.value)}
             onKeyPress={(event) => event.key === 'Enter' ? sendMessage(event) : null}
         />
+        <input className="input" type="file" accept=".jpg, .jpeg, .png" onChange={(event) => uploadImage(event)} />
         <button className="sendButton" onClick={(event) => sendMessage(event)}>Send</button>
     </form>
 );

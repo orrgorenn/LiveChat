@@ -15,6 +15,7 @@ const Chat = ({ location }) => {
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
     const [users, setUsers] = useState('');
+    const [image, setImage] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const ENDPOINT = 'localhost:2058';
@@ -56,14 +57,27 @@ const Chat = ({ location }) => {
         }
     }
 
-    console.log(message, messages);
+    const uploadImage = (event) => {
+        const fileList = event.target.files;
+        const file = fileList[0];
+        if (file.type && file.type.indexOf('image') === -1) {
+            console.log('File is not an image.', file.type, file);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener('load', (event) => {
+            socket.emit('sendImage', event.target.result, () => {});
+        });
+        reader.readAsDataURL(file);
+    }
 
     return (
         <div className="outerContainer">
             <div className="container">
                 <InfoBar room={room} />
                 <Messages messages={messages} name={name} />
-                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                <Input message={message} setMessage={setMessage} sendMessage={sendMessage} uploadImage={uploadImage} />
             </div>
             <TextContainer users={users}/>
         </div>
