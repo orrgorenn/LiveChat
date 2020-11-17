@@ -1,6 +1,7 @@
 const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
+const fs = require('fs');
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
 
@@ -42,8 +43,17 @@ io.on('connection', (socket) => {
     socket.on('sendImage', (image, callback) => {
         const user = getUser(socket.id);
 
-        io.to(user.room).emit('message', { user: user.name, text: image });
+        var stripImage = image.split(',')[1];
+
+        var bitmap = new Buffer.from(stripImage, 'base64');
+        var random = Math.random() * 100000000000000000;
+        var imageURL = 'images/' + random + '.jpg';
+        fs.writeFileSync(imageURL, bitmap);
+
+        io.to(user.room).emit('message', { user: user.name, text: '<img src="http://localhost:2058/imgName=' + random + '.jpg" style="max-width: 300px" />' });
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
+
+        console.log('Uploaded image');
 
         callback();
     });
