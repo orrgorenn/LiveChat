@@ -31,7 +31,6 @@ const Chat = ({ location }) => {
 
         return () => {
             socket.emit('disconnect');
-
             socket.off();
         }
     }, [ENDPOINT, location.search]);
@@ -69,6 +68,7 @@ const Chat = ({ location }) => {
             socket.emit('sendImage', event.target.result, () => {});
         });
         reader.readAsDataURL(file);
+        event.target.value = '';
     }
 
     return (

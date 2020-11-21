@@ -4,7 +4,7 @@ import './Message.css';
 
 import ReactEmoji from 'react-emoji';
 
-const Message = ({ message: { text, user, type }, name }) => {
+const Message = ({ message: { text, user, image }, name }) => {
   let isSentByCurrentUser = false;
   
   const trimmedName = name.trim().toLowerCase();
@@ -19,7 +19,9 @@ const Message = ({ message: { text, user, type }, name }) => {
         <div className="messageContainer justifyStart">
           <p className="sentText pl-10">{trimmedName}</p>
           <div className="messageBox backgroundBlue">
-            <p dangerouslySetInnerHTML={{__html: text}} />
+            <p className="messageText colorWhite">
+              {text !== '' ? text : <img src={image} alt={user} width={200} />}
+            </p>
           </div>
         </div>
         )
